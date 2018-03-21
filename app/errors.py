@@ -1,0 +1,2 @@
+class ImpropertyConfigured(Exception):
+    pass

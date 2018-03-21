@@ -9,13 +9,14 @@ from umongo import MotorAsyncIOInstance
 from umongo.document import MetaDocumentImplementation
 from umongo.template import MetaTemplate
 
-import settings
+
 from service import Uploader
 from utils import Routers
+import settings
 
 
 class WliImagesApplication(Application):
-    db = AsyncIOMotorClient().wli
+    db = AsyncIOMotorClient(settings.MONGODB_URI).wli
     db_instance = MotorAsyncIOInstance()
     db_instance.init(db)
 
@@ -82,6 +83,6 @@ async def create_index():
 if __name__ == '__main__':
     app = main()
     tornado.platform.asyncio.AsyncIOMainLoop().install()
-    app.listen(3001)
+    app.listen(settings.PORT)
     asyncio.get_event_loop().run_until_complete(create_index())
     asyncio.get_event_loop().run_forever()

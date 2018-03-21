@@ -3,7 +3,7 @@ from typing import Any
 
 import pymongo
 import tornado.web
-from tornado.escape import to_basestring, json_decode
+from tornado.escape import to_basestring
 
 from image.models import ImageDocument
 from utils import Routers
@@ -51,13 +51,20 @@ class ImageUpload(tornado.web.RequestHandler):
 class ImageList(tornado.web.RequestHandler):
 
     async def get(self, *args, **kwargs):
+        limit = self.get_argument("limit", 2)
         images = []
-        cursor = ImageDocument\
+        cursor = ImageDocument \
             .find({"liked": {"$gte": 0}}) \
             .sort([("liked", pymongo.ASCENDING)]) \
-            .limit(2)
+            .limit(limit)
         docs = await cursor.to_list(None)
         images.extend(docs)
         sh = ImageDocument.Schema(many=True, strict=True)
         res = sh.dumps(images, True)
         self.write(res.data)
+
+
+@Routers("/health")
+class ImageHealth(tornado.web.RequestHandler):
+    async def get(self):
+        self.write("OK")

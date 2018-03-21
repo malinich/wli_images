@@ -1,0 +1,13 @@
+version: "3"
+services:
+  wli_image:
+    build: .
+    image: "wli-image"
+    container_name: "wli_image"
+    environment:
+      - CONSUL_HOST=localhost
+    expose:
+      - 3000
+    ports:
+      - 3001:3000
+    network_mode: "host"
