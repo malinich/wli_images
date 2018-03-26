@@ -4,7 +4,7 @@ import consul
 
 from errors import ImpropertyConfigured
 
-PORT = os.environ.get("PORT", 3000)
+PORT = os.environ.get("PORT", 3003)
 
 DB_NAME = "wli"
 _SERVICE_KEY_PREFIX = "wli"
