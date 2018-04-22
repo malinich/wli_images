@@ -12,10 +12,11 @@ class Routers(object):
         self.name = name
 
     def __call__(self, handler):
-        name = self.name or handler.__class__
+        name = self.name or handler.__name__
         self._routers.append(
             tornado.web.url(self.url, handler, name=name)
         )
+        return handler
 
     @classmethod
     def get_routers(cls):

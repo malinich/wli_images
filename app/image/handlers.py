@@ -6,7 +6,8 @@ import tornado.web
 from tornado.escape import to_basestring
 
 from image.models import ImageDocument
-from utils import Routers
+
+from wli_images.app.utils import Routers
 
 
 @Routers("/upload")
@@ -46,6 +47,28 @@ class ImageUpload(tornado.web.RequestHandler):
         tags = string_tags.split(b",")
         return tags
 
+
+@Routers("/user", name="user")
+class UserImageUpload(ImageUpload):
+    async def post(self, *args, **kwargs):
+        images = []
+        for file in self.request.files['data']:
+            uploaded_file = await self.application.uploader.upload(
+                file['filename'], file['body'])
+
+            data = {
+                'public_id': uploaded_file['public_id'],
+                'filename': file['filename'],
+                'tags': ['user'],
+                'etag': uploaded_file['etag'],
+                'created_at': uploaded_file['created_at'],
+                'url': uploaded_file['url'],
+                'signature': uploaded_file['signature'],
+                "user": self.get_current_user(),
+            }
+            images.append(str(
+                (await ImageDocument(**data).commit()).inserted_id))
+        self.write(json.dumps(images))
 
 @Routers("/")
 class ImageList(tornado.web.RequestHandler):

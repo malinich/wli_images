@@ -14,7 +14,7 @@ class ImageDocument(Document, metaclass=MetaBaseTemplate):
 
     user = fields.UUIDField(required=True)
     liked = fields.IntegerField(missing=0)
-    created = fields.DateTimeField(missing=datetime.utcnow)
+    created_at = fields.DateTimeField(missing=datetime.utcnow)
 
     class Meta:
         collection_name = "images"

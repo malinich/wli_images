@@ -13,21 +13,26 @@ CONSUL_IMAGE_NAME = str.join('.', [_SERVICE_KEY_PREFIX, "image"])
 
 _MONGO_SERVICE_NAME = 'mongo'
 
-consul_client = consul.Consul(CONSUL_HOST)
+# consul_client = consul.Consul(CONSUL_HOST)
 
 
 def get_discovery_service(consul_client, service_name):
     return consul_client.agent.service.agent.catalog.service(service=service_name)
 
 
-_, mongodb_data = get_discovery_service(consul_client, _MONGO_SERVICE_NAME)
+# _, mongodb_data = get_discovery_service(consul_client, _MONGO_SERVICE_NAME)
 
-if not mongodb_data:
-    raise ImpropertyConfigured("MongoDB not running")
+# if not mongodb_data:
+#     raise ImpropertyConfigured("MongoDB not running")
 
-MONGODB_URI = 'mongodb://{address}:{port}/{db}'.format(
-    address=mongodb_data[0]['Address'],
-    port=mongodb_data[0]["ServicePort"],
+# MONGODB_URI = 'mongodb://{address}:{port}/{db}'.format(
+#     address=mongodb_data[0]['Address'],
+#     port=mongodb_data[0]["ServicePort"],
+#     db=DB_NAME
+# )
+MONGODB_URI = "mongodb://{address}:{port}/{db}".format(
+    address="wli_mongo",
+    port=27017,
     db=DB_NAME
 )
 

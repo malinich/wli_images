@@ -11,8 +11,10 @@ from umongo.template import MetaTemplate
 
 
 from service import Uploader
-from utils import Routers
+
 import settings
+
+from wli_images.app.utils import Routers
 
 
 class WliImagesApplication(Application):
